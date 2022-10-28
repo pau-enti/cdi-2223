@@ -1,25 +1,33 @@
 package com.example.firstapp
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstapp.databinding.ItemParticleBinding
 
-class ParticlesAdapter :
+class ParticlesAdapter(private val particles: List<String>) :
     RecyclerView.Adapter<ParticlesAdapter.ParticlesViewHolder>() {
 
-    inner class ParticlesViewHolder : RecyclerView.ViewHolder() {
-
+    inner class ParticlesViewHolder(binding: ItemParticleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val name = binding.particleName
+        val image = binding.particleImage
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticlesViewHolder {
-        TODO("Not yet implemented")
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemParticleBinding.inflate(layoutInflater)
+        return ParticlesViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ParticlesViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val particle = particles[position]
+        holder.name.text = particle
+
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return particles.size
     }
 
 }
