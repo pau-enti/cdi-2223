@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.firstapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,8 +17,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".quotes.QuotesActivity"
-            android:exported="true">
+            android:name=".nasa.NasaActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +26,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ParticlesActivity"
+            android:name=".quotes.QuotesActivity"
             android:exported="true">
+
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ParticlesActivity"
             android:exported="true"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
