@@ -1,7 +1,10 @@
 package com.example.firstapp.quotes
 
+import android.animation.ObjectAnimator
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.animation.doOnEnd
 import com.example.firstapp.databinding.ActivityQuotesBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,6 +23,7 @@ class QuotesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         nextQuote()
+        nextRandomColor()
 
         binding.nextQuoteButton.setOnClickListener {
             nextQuote()
@@ -45,5 +49,25 @@ class QuotesActivity : AppCompatActivity() {
                 binding.authorTextView.text = ""
             }
         })
+    }
+
+    private var lastColor = 0
+
+    fun nextRandomColor() {
+        val newColor: Int = Color.argb(150, (0..256).random(), (0..256).random(), (0..256).random())
+
+        ObjectAnimator.ofArgb(
+            binding.quotesLayout, "backgroundColor",
+            lastColor,
+            newColor
+        ).apply {
+            duration = 2000
+
+            start()
+        }.doOnEnd {
+            nextRandomColor()
+        }
+
+        lastColor = newColor
     }
 }

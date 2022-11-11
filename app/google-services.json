@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "618914304012",
+    "project_id": "cdi-2022",
+    "storage_bucket": "cdi-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618914304012:android:ee2448de5c69a1fe2f1e29",
+        "android_client_info": {
+          "package_name": "com.example.firstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618914304012-t2bqnuh4646fupusocqf0g070l8apk0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_K1UWiq1d5fUDMwvfu7lw5PzSxkUASNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618914304012-t2bqnuh4646fupusocqf0g070l8apk0h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
