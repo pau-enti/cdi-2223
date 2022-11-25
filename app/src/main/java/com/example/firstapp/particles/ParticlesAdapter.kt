@@ -1,12 +1,15 @@
-package com.example.firstapp
+package com.example.firstapp.particles
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.databinding.ItemParticleBinding
 
-class ParticlesAdapter(private val particles: List<String>) :
+class ParticlesAdapter(val context: Context) :
     RecyclerView.Adapter<ParticlesAdapter.ParticlesViewHolder>() {
+
+    private var particles: List<Particle> = listOf()
 
     inner class ParticlesViewHolder(binding: ItemParticleBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,8 +25,14 @@ class ParticlesAdapter(private val particles: List<String>) :
 
     override fun onBindViewHolder(holder: ParticlesViewHolder, position: Int) {
         val particle = particles[position]
-        holder.name.text = particle
+        holder.name.text = particle.name
+        holder.image.setColorFilter(context.getColor(particle.family.color()))
 
+    }
+
+    fun updateParticlesList(particles: List<Particle>) {
+        this.particles = particles
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
