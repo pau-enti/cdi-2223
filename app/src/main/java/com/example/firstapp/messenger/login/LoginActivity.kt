@@ -1,11 +1,12 @@
 package com.example.firstapp.messenger.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import com.example.firstapp.MainActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityLoginBinding
 import com.example.firstapp.messenger.contacts.ContactsActivity
@@ -15,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var sharedPrefs: SharedPreferences
 
     companion object {
         val currentUser: String
@@ -28,6 +30,17 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        if (firebaseAuth.currentUser != null) {
+            Toast.makeText(
+                this,
+                "Logged in as ${firebaseAuth.currentUser?.email}",
+                Toast.LENGTH_SHORT
+            ).show()
+            login()
+        }
+
 
         binding.loginButton.setOnClickListener {
             val username = binding.userInput.text.toString()
@@ -35,12 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
             firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnSuccessListener {
-                    val intent = Intent(this@LoginActivity, ContactsActivity::class.java)
-                    startActivity(intent)
-
-                    finish()
+                    login()
                 }.addOnFailureListener {
-                    Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
 
@@ -48,7 +59,12 @@ class LoginActivity : AppCompatActivity() {
             val username = binding.userInput.text.toString()
             val password = binding.passwordInput.text.toString()
 
-            firebaseAuth.createUserWithEmailAndPassword(username, password)
+            firebaseAuth.createUserWithEmailAndPassword(username, password).addOnSuccessListener {
+                Toast.makeText(this, "User $username created. Logging in", Toast.LENGTH_SHORT)
+                    .show()
+            }.addOnFailureListener {
+                Toast.makeText(this, "An error occurred: $it", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.userInput.setOnFocusChangeListener { view, hasFocus ->
@@ -60,5 +76,12 @@ class LoginActivity : AppCompatActivity() {
                     binding.userInput.error = null
             }
         }
+    }
+
+    private fun login() {
+        val intent = Intent(this@LoginActivity, ContactsActivity::class.java)
+        startActivity(intent)
+
+        finish()
     }
 }
