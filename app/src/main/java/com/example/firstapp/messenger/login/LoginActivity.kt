@@ -44,6 +44,13 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
+        binding.registerButton.setOnClickListener {
+            val username = binding.userInput.text.toString()
+            val password = binding.passwordInput.text.toString()
+
+            firebaseAuth.createUserWithEmailAndPassword(username, password)
+        }
+
         binding.userInput.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 val username = binding.userInput.text.toString()
