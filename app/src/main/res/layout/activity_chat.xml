@@ -30,6 +30,7 @@
         android:background="@drawable/style_input_message"
         android:inputType="textMultiLine|text"
         android:minHeight="48dp"
+        android:paddingLeft="5dp"
         android:singleLine="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/messageSend"
@@ -38,7 +39,7 @@
     <Button
         android:id="@+id/messageSend"
         android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:layout_marginEnd="16dp"
         app:icon="@drawable/ic_baseline_send_24"
         app:layout_constraintBottom_toBottomOf="@+id/messageInput"

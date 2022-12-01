@@ -16,10 +16,14 @@
         android:theme="@style/Theme.FirstApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <activity
             android:name=".fragments.BottomNavigationActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
@@ -34,12 +38,12 @@
             android:exported="true" />
         <activity
             android:name=".particles.ParticlesActivity"
-            android:exported="true" >
+            android:exported="true">
 
         </activity>
         <activity
             android:name=".messenger.login.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +55,7 @@
             android:exported="true" />
 
         <activity android:name=".messenger.chat.ChatActivity" />
-        <activity android:name=".messenger.contacts.ContactsActivity"/>
+        <activity android:name=".messenger.contacts.ContactsActivity" />
     </application>
 
 </manifest>
