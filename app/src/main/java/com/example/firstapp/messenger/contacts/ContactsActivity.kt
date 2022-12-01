@@ -30,21 +30,12 @@ class ContactsActivity : AppCompatActivity() {
         adapter = ContactsRecyclerViewAdapter(this)
         binding.contactsRecyclerView.adapter = adapter
 
-        MobileAds.initialize(this) {}
-
         binding.addContactButton.setOnClickListener {
             val newContact = binding.newContact.text.toString()
             binding.newContact.text?.clear()
             contacts.add(Contact(newContact, newContact))
             adapter.updateContacts(contacts)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-        adapter.loadAd()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
