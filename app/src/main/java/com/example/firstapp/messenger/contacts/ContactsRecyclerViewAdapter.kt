@@ -1,7 +1,7 @@
 package com.example.firstapp.messenger.contacts
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,11 +11,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.databinding.ItemContactBinding
 import com.example.firstapp.messenger.chat.ChatActivity
 import com.example.firstapp.messenger.contacts.model.Contact
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
-class ContactsRecyclerViewAdapter(private val context: Context) :
+class ContactsRecyclerViewAdapter(private val activity: Activity) :
     RecyclerView.Adapter<ContactsRecyclerViewAdapter.ContactViewHolder>() {
 
     private var contacts: List<Contact> = listOf()
+    private var ad: InterstitialAd? = null
+
+    fun loadAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(activity, "ca-app-pub-3940256099942544/1033173712",
+        adRequest, object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    ad = null
+                }
+
+                override fun onAdLoaded(loadedAd: InterstitialAd) {
+                    ad = loadedAd
+                }
+            })
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateContacts(contacts: List<Contact>) {
@@ -34,9 +55,36 @@ class ContactsRecyclerViewAdapter(private val context: Context) :
         holder.name.text = contact.name
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ChatActivity::class.java)
+            val intent = Intent(activity, ChatActivity::class.java)
             intent.putExtra(ChatActivity.EXTRA_USER_ID, contact.userId)
-            context.startActivity(intent)
+
+            ad?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    activity.startActivity(intent)
+                }
+
+                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                    activity.startActivity(intent)
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    ad = null
+                }
+            }
+
+            ad?.apply {
+                show(activity)
+            } ?: activity.startActivity(intent)
+
+//            ad?.let {
+//                it.show(activity)
+//            } ?: activity.startActivity(intent)
+
+//            if (ad != null) {
+//                ad?.show(activity)
+//            } else {
+//                activity.startActivity(intent)
+//            }
         }
     }
 
