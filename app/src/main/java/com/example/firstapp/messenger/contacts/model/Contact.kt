@@ -7,4 +7,4 @@ data class Contact(
     val name: String,
     val userId: String,
     val imageFile: URI?=null
-): Serializable
+)

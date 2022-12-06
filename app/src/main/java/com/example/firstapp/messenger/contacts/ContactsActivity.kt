@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityContactsBinding
@@ -18,7 +17,7 @@ class ContactsActivity : AppCompatActivity() {
     lateinit var binding: ActivityContactsBinding
     private lateinit var adapter: ContactsRecyclerViewAdapter
 
-    private val contactsViewModel by viewModels<ContactsViewModel>()
+    private val contacts: ArrayList<Contact> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,24 +25,15 @@ class ContactsActivity : AppCompatActivity() {
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ContactsRecyclerViewAdapter(this, contactsViewModel)
+        adapter = ContactsRecyclerViewAdapter(this)
         binding.contactsRecyclerView.adapter = adapter
 
         binding.addContactButton.setOnClickListener {
             val newContact = binding.newContact.text.toString()
             binding.newContact.text?.clear()
-            contactsViewModel.addContact(Contact(newContact, newContact))
+            contacts.add(Contact(newContact, newContact))
+            adapter.updateContacts(contacts)
         }
-
-        contactsViewModel.loadData(this)
-        contactsViewModel.contacts.observe(this) {
-            adapter.updateContacts(it)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        contactsViewModel.saveData(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
