@@ -4,13 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityContactsBinding
 import com.example.firstapp.messenger.contacts.model.Contact
 import com.example.firstapp.messenger.login.LoginActivity
-import com.google.android.gms.ads.*
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -19,7 +18,7 @@ class ContactsActivity : AppCompatActivity() {
     lateinit var binding: ActivityContactsBinding
     private lateinit var adapter: ContactsRecyclerViewAdapter
 
-    private val contacts = ArrayList<Contact>()
+    private val contactsViewModel by viewModels<ContactsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +26,24 @@ class ContactsActivity : AppCompatActivity() {
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ContactsRecyclerViewAdapter(this)
+        adapter = ContactsRecyclerViewAdapter(this, contactsViewModel)
         binding.contactsRecyclerView.adapter = adapter
 
         binding.addContactButton.setOnClickListener {
             val newContact = binding.newContact.text.toString()
             binding.newContact.text?.clear()
-            contacts.add(Contact(newContact, newContact))
-            adapter.updateContacts(contacts)
+            contactsViewModel.addContact(Contact(newContact, newContact))
         }
+
+        contactsViewModel.loadData(this)
+        contactsViewModel.contacts.observe(this) {
+            adapter.updateContacts(it)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        contactsViewModel.saveData(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
