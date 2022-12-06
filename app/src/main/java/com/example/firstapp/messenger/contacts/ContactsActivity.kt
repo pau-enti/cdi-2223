@@ -9,6 +9,8 @@ import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityContactsBinding
 import com.example.firstapp.messenger.contacts.model.Contact
 import com.example.firstapp.messenger.login.LoginActivity
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -45,8 +47,6 @@ class ContactsActivity : AppCompatActivity() {
         binding.adView.loadAd(request)
 
         adapter.loadAd()
-//        binding.adView.adListener = object : AdListener() {
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

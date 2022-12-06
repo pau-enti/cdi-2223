@@ -27,7 +27,7 @@ class ContactsRecyclerViewAdapter(private val activity: Activity) :
     fun loadAd() {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(activity, "ca-app-pub-3940256099942544/1033173712",
-        adRequest, object : InterstitialAdLoadCallback() {
+            adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(p0: LoadAdError) {
                     ad = null
                 }
