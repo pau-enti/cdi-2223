@@ -34,6 +34,19 @@ class ContactsActivity : AppCompatActivity() {
             contacts.add(Contact(newContact, newContact))
             adapter.updateContacts(contacts)
         }
+
+        MobileAds.initialize(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val request = AdRequest.Builder().build()
+        binding.adView.loadAd(request)
+
+        adapter.loadAd()
+//        binding.adView.adListener = object : AdListener() {
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
