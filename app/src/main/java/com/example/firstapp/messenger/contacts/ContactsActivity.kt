@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityContactsBinding
@@ -18,8 +19,7 @@ class ContactsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityContactsBinding
     private lateinit var adapter: ContactsRecyclerViewAdapter
-
-    private val contacts: ArrayList<Contact> = arrayListOf()
+    private val contactsViewModel: ContactsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +27,21 @@ class ContactsActivity : AppCompatActivity() {
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ContactsRecyclerViewAdapter(this)
+        adapter = ContactsRecyclerViewAdapter(this, contactsViewModel)
         binding.contactsRecyclerView.adapter = adapter
 
         binding.addContactButton.setOnClickListener {
             val newContact = binding.newContact.text.toString()
             binding.newContact.text?.clear()
-            contacts.add(Contact(newContact, newContact))
-            adapter.updateContacts(contacts)
+            contactsViewModel.addContact(Contact(newContact, newContact))
         }
 
         MobileAds.initialize(this)
+
+        contactsViewModel.loadData(this)
+        contactsViewModel.contacts.observe(this) {
+            adapter.updateContacts(it)
+        }
     }
 
     override fun onResume() {
@@ -47,6 +51,11 @@ class ContactsActivity : AppCompatActivity() {
         binding.adView.loadAd(request)
 
         adapter.loadAd()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        contactsViewModel.saveData(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

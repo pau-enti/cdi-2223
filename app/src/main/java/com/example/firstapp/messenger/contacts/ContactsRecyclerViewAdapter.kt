@@ -2,12 +2,14 @@ package com.example.firstapp.messenger.contacts
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.firstapp.R
 import com.example.firstapp.databinding.ItemContactBinding
 import com.example.firstapp.messenger.chat.ChatActivity
 import com.example.firstapp.messenger.contacts.model.Contact
@@ -17,8 +19,12 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.material.snackbar.Snackbar
 
-class ContactsRecyclerViewAdapter(private val activity: Activity) :
+class ContactsRecyclerViewAdapter(
+    private val activity: Activity,
+    private val contactsViewModel: ContactsViewModel
+) :
     RecyclerView.Adapter<ContactsRecyclerViewAdapter.ContactViewHolder>() {
 
     private var contacts: List<Contact> = listOf()
@@ -75,17 +81,28 @@ class ContactsRecyclerViewAdapter(private val activity: Activity) :
             ad?.apply {
                 show(activity)
             } ?: activity.startActivity(intent)
-
-//            ad?.let {
-//                it.show(activity)
-//            } ?: activity.startActivity(intent)
-
-//            if (ad != null) {
-//                ad?.show(activity)
-//            } else {
-//                activity.startActivity(intent)
-//            }
         }
+
+        holder.itemView.setOnLongClickListener {
+            val dialog = AlertDialog.Builder(activity)
+            dialog.setTitle("Are you sure you want to remove ${contact.name}?")
+            dialog.setPositiveButton(R.string.yes) { _, _ ->
+                contactsViewModel.removeContact(contact)
+
+                val snack = Snackbar.make(holder.itemView, "Contact ${contact.name} is removed", Snackbar.LENGTH_SHORT)
+                snack.setAction("Undo") {
+                    contactsViewModel.addContact(contact)
+                }
+                snack.show()
+            }
+            dialog.setNegativeButton(R.string.cancel) { _, _ ->
+                // pass
+            }
+            dialog.show()
+
+            true
+        }
+
     }
 
     override fun getItemCount(): Int = contacts.size
