@@ -1,15 +1,16 @@
 package com.example.firstapp.messenger.chat
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapp.databinding.ActivityChatBinding
+import com.example.firstapp.messenger.chat.model.Chat
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var adapter: ChatRecyclerViewAdapter
-    private val chatViewModel: ChatViewModel by viewModels()
+
+    private lateinit var chat: Chat
 
     companion object {
         const val EXTRA_USER_ID = "EXTRA_USER_ID"
@@ -21,22 +22,22 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ChatRecyclerViewAdapter(this, chatViewModel)
+        adapter = ChatRecyclerViewAdapter()
         binding.chatView.adapter = adapter
 
-        val user = intent.extras?.getString(EXTRA_USER_ID) ?: return
-        supportActionBar?.title = user
+        val interlocutor = intent.extras?.getString(EXTRA_USER_ID) ?: return
+        supportActionBar?.title = interlocutor
 
-        chatViewModel.openChatWith(user)
+        chat = Chat(interlocutor)
 
         binding.sendButton.setOnClickListener {
             val text = binding.messageInput.text.toString()
             if (text.isNotBlank()) {
                 binding.messageInput.text.clear()
-                chatViewModel.sendMessage(text)
+
+                chat.addMessage(text)
+                adapter.notifyNewMessage(chat)
             }
         }
-
-
     }
 }

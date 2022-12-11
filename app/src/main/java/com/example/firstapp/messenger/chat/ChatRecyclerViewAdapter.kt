@@ -16,25 +16,16 @@ import com.example.firstapp.messenger.login.LoginActivity
 
 
 @SuppressLint("NotifyDataSetChanged")
-class ChatRecyclerViewAdapter(
-    lifecycleOwner: LifecycleOwner,
-    chatViewModel: ChatViewModel
-) :
+class ChatRecyclerViewAdapter :
     RecyclerView.Adapter<ChatRecyclerViewAdapter.ChatVH>() {
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var messages: ArrayList<ChatMessage> = ArrayList()
 
-    init {
-        chatViewModel.chat.observe(lifecycleOwner) {
-            messages = it.messages
-            notifyDataSetChanged()
-            layoutManager?.scrollToPosition(messages.size - 1)
-        }
-    }
-
     fun notifyNewMessage(chat: Chat) {
-
+        messages = chat.messages
+        notifyDataSetChanged()
+        layoutManager?.scrollToPosition(messages.size - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatVH {
