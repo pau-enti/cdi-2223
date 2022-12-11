@@ -1,6 +1,7 @@
 package com.example.firstapp.messenger.chat
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapp.databinding.ActivityChatBinding
 
@@ -8,6 +9,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var adapter: ChatRecyclerViewAdapter
+    private val chatViewModel: ChatViewModel by viewModels()
 
     companion object {
         const val EXTRA_USER_ID = "EXTRA_USER_ID"
@@ -19,11 +21,21 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ChatRecyclerViewAdapter(binding.chatView.layoutManager)
+        adapter = ChatRecyclerViewAdapter(this, chatViewModel)
         binding.chatView.adapter = adapter
 
         val user = intent.extras?.getString(EXTRA_USER_ID) ?: return
         supportActionBar?.title = user
+
+        chatViewModel.openChatWith(user)
+
+        binding.sendButton.setOnClickListener {
+            val text = binding.messageInput.text.toString()
+            if (text.isNotBlank()) {
+                binding.messageInput.text.clear()
+                chatViewModel.sendMessage(text)
+            }
+        }
 
 
     }
