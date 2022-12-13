@@ -7,6 +7,7 @@
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/drawable/ic_baseline_palette_24.xml" value="0.344" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/drawable/shape_background_quotes_button.xml" value="0.344" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.37083333333333335" />
+        <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/activity_chat.xml" value="0.3625" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/activity_contacts.xml" value="0.3625" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/activity_login.xml" value="0.3625" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
@@ -17,6 +18,8 @@
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/fragment_second_round.xml" value="0.37083333333333335" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/item_nasa_image.xml" value="0.33" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/item_particle.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/item_received_message.xml" value="0.3625" />
+        <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/item_sent_message.xml" value="0.3625" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.3697916666666667" />
         <entry key="..\:/Users/PauGarcia/AndroidStudioProjects/FirstApp/app/src/main/res/menu/menu_contacts.xml" value="0.3625" />
