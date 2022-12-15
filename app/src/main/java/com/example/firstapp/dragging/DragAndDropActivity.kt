@@ -19,8 +19,8 @@ class DragAndDropActivity : AppCompatActivity() {
     private val GAME_TIME: Long = 30_000L
     private lateinit var binding: ActivityDragAndDropBinding
 
-    private val aliveGroup = arrayListOf<String>()
-    private val deathGroup = arrayListOf<String>()
+    private val aliveGroup = arrayListOf<Star>()
+    private val deathGroup = arrayListOf<Star>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +37,17 @@ class DragAndDropActivity : AppCompatActivity() {
 
             // Col·loquem el chip en un dels dos grups aleatoriament
             if (listOf(true, false).random()) {
-                aliveGroup.add(star.name)
+                aliveGroup.add(star)
                 binding.aliveChipsGroup.addView(chip)
             } else {
-                deathGroup.add(star.name)
+                deathGroup.add(star)
                 binding.deathChipsGroup.addView(chip)
             }
 
             // Implementem el moviment del chip, que comenci el dragging
             chip.setOnLongClickListener {
                 val shadow = View.DragShadowBuilder(it)
-                it.startDragAndDrop(null, shadow, it, 0)
+                it.startDragAndDrop(null, shadow, star to chip, 0)
             }
         }
 
@@ -57,14 +57,20 @@ class DragAndDropActivity : AppCompatActivity() {
         startBlackholeAnimations()
     }
 
-    private val dragListenerMove = View.OnDragListener { destinationView, draggingView ->
+    private val dragListenerMove = View.OnDragListener { destinationView, draggingData ->
 
-        // Obtenim l'objecte que s'està arrossegant de manera segura
-        val chip = draggingView.localState
-        if (chip !is Chip)
+        // Obtenim les dades de l'objecte que s'arrossega
+        val data = draggingData.localState
+        if (data !is Pair<*, *>)
             return@OnDragListener false
 
-        when (draggingView.action) {
+        val chip = data.first
+        val star = data.second
+
+        if (chip !is Chip || star !is Star)
+            return@OnDragListener false
+
+        when (draggingData.action) {
             // 1. Comença el drag: Hem de retornar true per continuar el drag. False per detenir-lo
             DragEvent.ACTION_DRAG_STARTED -> {
                 chip.isVisible = false
@@ -78,13 +84,12 @@ class DragAndDropActivity : AppCompatActivity() {
                 ChipGroup::class.safeCast(destinationView)?.addView(chip)
 
                 // Update data lists
-                val starName = chip.text.toString()
                 if (destinationView.id == binding.aliveChipsGroup.id) {
-                    aliveGroup.add(starName)
-                    deathGroup.remove(starName)
+                    aliveGroup.add(star)
+                    deathGroup.remove(star)
                 } else {
-                    deathGroup.add(starName)
-                    aliveGroup.remove(starName)
+                    deathGroup.add(star)
+                    aliveGroup.remove(star)
                 }
 
                 checkVictory()
@@ -110,19 +115,20 @@ class DragAndDropActivity : AppCompatActivity() {
         binding.aliveChipsGroup.setOnDragListener(null)
         binding.deathChipsGroup.setOnDragListener(null)
 
+        // BH creix
         binding.blackhole.animate().scaleX(10f).scaleY(10f).apply {
             duration = 1_000
         }
     }
 
     private fun checkVictory() {
-        if (aliveGroup.all { Stars.checkStatusOf(it) == Star.LifeStatus.ALIVE } &&
-            deathGroup.all { Stars.checkStatusOf(it) == Star.LifeStatus.DEATH }) {
+        if (aliveGroup.all { it.lifeStatus == Star.LifeStatus.ALIVE } &&
+            deathGroup.all { it.lifeStatus == Star.LifeStatus.DEATH }) {
 
             Toast.makeText(this, getString(R.string.win_message), Toast.LENGTH_SHORT).show()
 
             // Tornem el BH a la seva mida original
-            binding.blackhole.animate().scaleX(1f).scaleY(1f).apply {
+            binding.blackhole.animate().scaleX(0f).scaleY(0f).apply {
                 duration = 1_000
             }
 
