@@ -103,27 +103,28 @@ class DragAndDropActivity : AppCompatActivity() {
      * GAME CONTROLLER
      */
 
-    private fun finishGame() {
-        // Tornem el BH a la seva mida original
-        binding.blackhole.animate().scaleX(1f).scaleY(1f).apply {
-            duration = 1_000
-        }
+    private fun loseGame() {
+        binding.loseMessage.isVisible = true
 
         // Desactivem el drag
         binding.aliveChipsGroup.setOnDragListener(null)
         binding.deathChipsGroup.setOnDragListener(null)
     }
 
-    private fun loseGame() {
-        binding.loseMessage.isVisible = true
-        finishGame()
-    }
-
     private fun checkVictory() {
         if (aliveGroup.all { Stars.checkStatusOf(it) == Star.LifeStatus.ALIVE } &&
             deathGroup.all { Stars.checkStatusOf(it) == Star.LifeStatus.DEATH }) {
-            finishGame()
+
             Toast.makeText(this, getString(R.string.win_message), Toast.LENGTH_SHORT).show()
+
+            // Tornem el BH a la seva mida original
+            binding.blackhole.animate().scaleX(1f).scaleY(1f).apply {
+                duration = 1_000
+            }
+
+            // Desactivem el drag
+            binding.aliveChipsGroup.setOnDragListener(null)
+            binding.deathChipsGroup.setOnDragListener(null)
         }
     }
 
