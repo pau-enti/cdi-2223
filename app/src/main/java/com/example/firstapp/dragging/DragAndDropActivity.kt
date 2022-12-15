@@ -109,6 +109,10 @@ class DragAndDropActivity : AppCompatActivity() {
         // Desactivem el drag
         binding.aliveChipsGroup.setOnDragListener(null)
         binding.deathChipsGroup.setOnDragListener(null)
+
+        binding.blackhole.animate().scaleX(10f).scaleY(10f).apply {
+            duration = 1_000
+        }
     }
 
     private fun checkVictory() {
