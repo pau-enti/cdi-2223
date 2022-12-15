@@ -21,4 +21,11 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
+
+    <!-- Star phases -->
+    <string name="stars_life_phases">Alive Stars</string>
+    <string name="stars_death_phases">Death Stars</string>
+    <string name="you_lose">You lose :(</string>
+    <string name="win_message">You won!</string>
+    <string name="lose_message">You lose :(</string>
 </resources>

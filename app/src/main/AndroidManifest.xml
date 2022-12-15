@@ -27,13 +27,12 @@
 
         <activity
             android:name=".TestActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".nasa.NasaActivity"
             android:exported="true" />
@@ -48,19 +47,21 @@
 
         <activity
             android:name=".messenger.login.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"/>
+        <activity android:name=".MainActivity" />
 
         <activity android:name=".messenger.chat.ChatActivity" />
         <activity android:name=".messenger.contacts.ContactsActivity" />
+
+        <activity
+            android:name=".dragging.DragAndDropActivity"
+            android:exported="true"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
