@@ -54,13 +54,7 @@ class DragAndDropActivity : AppCompatActivity() {
         binding.aliveChipsGroup.setOnDragListener(dragListenerMove)
         binding.deathChipsGroup.setOnDragListener(dragListenerMove)
 
-        startRotationAnimations()
-        binding.blackhole.animate().scaleX(5f).scaleY(5f).apply {
-            duration = GAME_TIME
-            withEndAction {
-                loseGame()
-            }
-        }
+        startBlackholeAnimations()
     }
 
     private val dragListenerMove = View.OnDragListener { destinationView, draggingView ->
@@ -105,10 +99,13 @@ class DragAndDropActivity : AppCompatActivity() {
         return@OnDragListener true
     }
 
+    /**
+     * GAME CONTROLLER
+     */
+
     private fun finishGame() {
-        binding.blackhole.clearAnimation()
-        startRotationAnimations()
-        binding.blackhole.animate().scaleX(1.5f).scaleY(1.5f).apply {
+        // Tornem el BH a la seva mida original
+        binding.blackhole.animate().scaleX(1f).scaleY(1f).apply {
             duration = 1_000
         }
 
@@ -118,7 +115,6 @@ class DragAndDropActivity : AppCompatActivity() {
     }
 
     private fun loseGame() {
-        //Toast.makeText(this@DragAndDropActivity, getString(R.string.lose_message), Toast.LENGTH_SHORT).show()
         binding.loseMessage.isVisible = true
         finishGame()
     }
@@ -131,7 +127,16 @@ class DragAndDropActivity : AppCompatActivity() {
         }
     }
 
-    private fun startRotationAnimations() {
+    private fun startBlackholeAnimations() {
+        // Creix
+        binding.blackhole.animate().scaleX(5f).scaleY(5f).apply {
+            duration = GAME_TIME
+            withEndAction {
+                loseGame()
+            }
+        }
+
+        // Gira
         binding.blackhole.startAnimation(
             RotateAnimation(
                 0f,
