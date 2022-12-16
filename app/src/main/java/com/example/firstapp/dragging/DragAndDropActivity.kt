@@ -64,8 +64,8 @@ class DragAndDropActivity : AppCompatActivity() {
         if (data !is Pair<*, *>)
             return@OnDragListener false
 
-        val chip = data.first
-        val star = data.second
+        val chip = data.second
+        val star = data.first
 
         if (chip !is Chip || star !is Star)
             return@OnDragListener false
