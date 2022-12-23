@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ItemContactBinding
@@ -20,6 +21,9 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class ContactsRecyclerViewAdapter(
     private val activity: Activity,
@@ -29,6 +33,8 @@ class ContactsRecyclerViewAdapter(
 
     private var contacts: List<Contact> = listOf()
     private var ad: InterstitialAd? = null
+    private val firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
+    val IS_LOADED_AD_PARAM = "IS_LOADED_AD_PARAM"
 
     fun loadAd() {
         val adRequest = AdRequest.Builder().build()
@@ -78,6 +84,14 @@ class ContactsRecyclerViewAdapter(
                 }
             }
 
+            firebaseAnalytics.logEvent(
+                FirebaseAnalytics.Event.AD_IMPRESSION,
+                bundleOf(
+                    FirebaseAnalytics.Param.AD_UNIT_NAME to ad?.adUnitId,
+                    IS_LOADED_AD_PARAM to (ad != null)
+                )
+            )
+
             ad?.apply {
                 show(activity)
             } ?: activity.startActivity(intent)
@@ -89,7 +103,11 @@ class ContactsRecyclerViewAdapter(
             dialog.setPositiveButton(R.string.yes) { _, _ ->
                 contactsViewModel.removeContact(contact)
 
-                val snack = Snackbar.make(holder.itemView, "Contact ${contact.name} is removed", Snackbar.LENGTH_SHORT)
+                val snack = Snackbar.make(
+                    holder.itemView,
+                    "Contact ${contact.name} is removed",
+                    Snackbar.LENGTH_SHORT
+                )
                 snack.setAction("Undo") {
                     contactsViewModel.addContact(contact)
                 }
